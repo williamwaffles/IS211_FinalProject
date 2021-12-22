@@ -1,12 +1,12 @@
 from flask import Flask, render_template, redirect, request
-from flask_sqlalchemy import sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 # for reference: https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/#a-minimal-application
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
-db = sqlalchemy(app)
+db = SQLAlchemy(app)
 
 
 class Bloggr(db.Model):
@@ -56,8 +56,8 @@ def edit(id):
     to_edit = Bloggr.query.get_or_404(id)
     if request.method == 'POST':
         to_edit.title = request.form['title']
-        to_edit.author = request.form['author']
         to_edit.content = request.form['post']
+        to_edit.author = request.form['author']
         db.session.commit()
         return redirect('/posts')
 
